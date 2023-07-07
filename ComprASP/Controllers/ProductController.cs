@@ -1,5 +1,4 @@
 ﻿using ComprASP.Data;
-using ComprASP.Services.Markets;
 using ComprASP.Services.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +12,12 @@ namespace ComprASP.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        private readonly IMarketService _marketService;
+        //private readonly IMarketService _marketService;
 
-        public ProductController(IProductService productService, IMarketService marketService)
+        public ProductController(IProductService productService)
         {
             _productService = productService;
-            _marketService = marketService;
+            //_marketService = marketService;
         }
 
         [HttpGet("{purchaseId}")]
@@ -26,8 +25,8 @@ namespace ComprASP.Controllers
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            IEnumerable<Market> markets = await _marketService.Markets(userId);
-            ViewBag.Markets = new SelectList(markets, nameof(Market.Id), nameof(Market.Name));
+            //IEnumerable<Market> markets = await _marketService.Markets(userId);
+            //ViewBag.Markets = new SelectList(markets, nameof(Market.Id), nameof(Market.Name));
 
             return PartialView("_Edit");
         }

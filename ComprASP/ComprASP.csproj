@@ -19,4 +19,9 @@
     <ProjectReference Include="..\ComprASP.Data\ComprASP.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Markets\Repositories\" />
+    <Folder Include="Views\Market\" />
+  </ItemGroup>
+
 </Project>

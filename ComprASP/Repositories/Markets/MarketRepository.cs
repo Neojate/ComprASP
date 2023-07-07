@@ -12,7 +12,7 @@ namespace ComprASP.Repositories.Markets
             _context = context;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             Market? market = await _context.Markets.FirstOrDefaultAsync(item => item.Id == id);
 
@@ -25,17 +25,17 @@ namespace ComprASP.Repositories.Markets
             return 1;
         }
 
-        public async Task<IEnumerable<Market>> Get(string userId)
+        public async Task<IEnumerable<Market>> GetAllAsync(string userId)
         {
             return await _context.Markets.Where(item => item.UserId == userId).ToListAsync();  
         }
 
-        public async Task<Market> Get(int id)
+        public async Task<Market> GetAsync(int id)
         {
             return await _context.Markets.FirstOrDefaultAsync(item => item.Id == id);
         }
 
-        public async Task<Market> Store(Market market)
+        public async Task<Market> StoreAsync(Market market)
         {
             await _context.Markets.AddAsync(market);
             await _context.SaveChangesAsync();
@@ -43,7 +43,7 @@ namespace ComprASP.Repositories.Markets
             return market;
         }
 
-        public async Task<Market> Update(Market market)
+        public async Task<Market> UpdateAsync(Market market)
         {
             _context.Update(market);
             await _context.SaveChangesAsync();
