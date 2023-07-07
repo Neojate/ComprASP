@@ -1,6 +1,6 @@
 ﻿using ComprASP.Data;
 
-namespace ComprASP.Repositories.Markets
+namespace ComprASP.Areas.Markets.Repositories
 {
     public interface IMarketRepository
     {

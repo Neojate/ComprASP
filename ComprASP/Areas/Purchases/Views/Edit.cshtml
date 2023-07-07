@@ -1,11 +1,11 @@
-﻿@using ComprASP.Data;
-@model Purchase
+﻿@model Purchase
 
 <partial name="_Modal" />
 <form asp-action="@ViewBag.FormAction" method="post">
     @if (Model != null)
     {
         <input asp-for="Id" type="hidden" />
+        <input asp-for="CreatedAt" type="hidden" />
     }
     <div class="row">
         <div class="col-12">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end mt-4">
             <a asp-action="Index" class="btn btn-outline-dark">Volver</a>
             <button class="btn btn-outline-warning ms-2" type="submit">Guardar</button>
         </div>

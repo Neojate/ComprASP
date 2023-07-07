@@ -1,18 +1,18 @@
-﻿@using ComprASP.Data;
-@model Product
+﻿@using ComprASP.Areas.Purchases.ViewModels;
+@model AddProductViewModel
 
 <form asp-action="Edit">
     <div class="row">
         <div class="col-12">
-            <label asp-for="Name">Nombre</label>
-            <input asp-for="Name" class="form-control" name="Name" type="text" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="ProductName">Nombre</label>
+            <input asp-for="ProductName" class="form-control" name="Name" type="text" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <label asp-for="MarketId">Mercado</label>
-            <select asp-for="MarketId" asp-items="@ViewBag.Markets" class="form-control">
+            <select asp-for="MarketId" asp-items="Model.Markets" class="form-control">
                 <option>Selecciona uno</option>                
             </select>
         </div>

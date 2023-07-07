@@ -1,7 +1,7 @@
 ﻿using ComprASP.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComprASP.Repositories.Purchases
+namespace ComprASP.Areas.Purchases.Repositories
 {
     public class PurchaseRepository : IPurchaseRepository
     {
@@ -10,14 +10,14 @@ namespace ComprASP.Repositories.Purchases
         public PurchaseRepository(CompraspDbContext context)
         {
             _context = context;
-        }   
+        }
 
         public Task<int> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Purchase>> GetAsync(string userId)
+        public async Task<IEnumerable<Purchase>> GetAllAsync(string userId)
         {
             return await _context.Purchases.Where(item => item.UserId == userId).ToListAsync();
         }

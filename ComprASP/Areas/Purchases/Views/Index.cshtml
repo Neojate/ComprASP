@@ -1,8 +1,6 @@
-﻿@using ComprASP.Data;
-
-<h1>Listas compra</h1>
-<div class="d-flex justify-content-end">
-    <a class="btn btn-outline-warning" asp-action="Create">Crear nuevo</a>
+﻿<h1>Listas compra</h1>
+<div class="d-flex justify-content-end mb-4">
+    <a asp-action="Create" class="btn btn-outline-warning">Crear nuevo</a>
 </div> 
 <table class="table table-bordered">
     <thead>
@@ -17,7 +15,7 @@
             <tr>
                 <td>@purchase.Name</td>
                 <td>
-                    <a class="btn btn-sm btn-outline-success" href="Edit/@purchase.Id">Editar</a>
+                    <a asp-action="Edit" asp-route-id="@purchase.Id" class="btn btn-sm btn-outline-success">Editar</a>
                 </td>
             </tr>
         }

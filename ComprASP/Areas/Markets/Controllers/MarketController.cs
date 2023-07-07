@@ -1,5 +1,5 @@
-﻿using ComprASP.Data;
-using ComprASP.Repositories.Markets;
+﻿using ComprASP.Areas.Markets.Repositories;
+using ComprASP.Data;
 using ComprASP.ViewModels.Markets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

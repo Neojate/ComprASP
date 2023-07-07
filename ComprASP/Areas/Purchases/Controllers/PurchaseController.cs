@@ -1,34 +1,35 @@
-﻿using ComprASP.Data;
-using ComprASP.Services.Purchases;
+﻿using ComprASP.Areas.Purchases.Repositories;
+using ComprASP.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace ComprASP.Controllers
+namespace ComprASP.Areas.Purchases.Controllers
 {
+    [Area("Purchases")]
     [Route("[controller]/[action]")]
     [Authorize]
     public class PurchaseController : Controller
     {
-        private readonly IPurchaseService _purchaseService;
+        private readonly IPurchaseRepository _purchaseRepository;
 
-        public PurchaseController(IPurchaseService purchaseService)
+        private string UserId { get { return User.FindFirstValue(ClaimTypes.NameIdentifier); } }
+
+        public PurchaseController(IPurchaseRepository purchaseRepository)
         {
-            _purchaseService = purchaseService;
+            _purchaseRepository = purchaseRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            IEnumerable<Purchase> purchases = await _purchaseService.PurchasesAsync(userId);
+            IEnumerable<Purchase> purchases = await _purchaseRepository.GetAllAsync(UserId);
 
             return View(purchases);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             ViewBag.FormAction = nameof(Create);
 
@@ -42,11 +43,11 @@ namespace ComprASP.Controllers
             if (!ModelState.IsValid)
                 return View("Edit", purchase);
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            purchase.UserId = UserId;
+            purchase.Name = purchase.Name ?? DateTime.Now.ToString();
+            purchase.CreatedAt = DateTime.Now;
 
-            Purchase p = await _purchaseService.StoreAsync(purchase, userId);
-
-            return p == null
+            return await _purchaseRepository.StoreAsync(purchase) == null
                 ? View("Edit", purchase)
                 : RedirectToAction(nameof(Index));
         }
@@ -54,7 +55,7 @@ namespace ComprASP.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Edit(int id)
         {
-            Purchase purchase = await _purchaseService.PurchaseAsync(id);
+            Purchase purchase = await _purchaseRepository.GetAsync(id);
 
             if (purchase == null)
                 return NotFound();
@@ -71,14 +72,11 @@ namespace ComprASP.Controllers
             if (!ModelState.IsValid)
                 return View(purchase);
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            purchase.UserId = UserId;
 
-            Purchase p = await _purchaseService.UpdateAsync(purchase, userId);
-
-            if (purchase == null)
-                return View(p);
-
-            return RedirectToAction(nameof(Index));
+            return await _purchaseRepository.UpdateAsync(purchase) == null
+                ? View(purchase)
+                : RedirectToAction(nameof(Index));
         }
     }
 }

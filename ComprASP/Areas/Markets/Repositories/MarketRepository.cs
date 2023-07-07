@@ -1,7 +1,7 @@
 ﻿using ComprASP.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComprASP.Repositories.Markets
+namespace ComprASP.Areas.Markets.Repositories
 {
     public class MarketRepository : IMarketRepository
     {
@@ -27,7 +27,7 @@ namespace ComprASP.Repositories.Markets
 
         public async Task<IEnumerable<Market>> GetAllAsync(string userId)
         {
-            return await _context.Markets.Where(item => item.UserId == userId).ToListAsync();  
+            return await _context.Markets.Where(item => item.UserId == userId).ToListAsync();
         }
 
         public async Task<Market> GetAsync(int id)
