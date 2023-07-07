@@ -1,0 +1,25 @@
+﻿@using ComprASP.Data;
+
+<h1>Listas compra</h1>
+<div class="d-flex justify-content-end">
+    <a class="btn btn-outline-warning" asp-action="Create">Crear nuevo</a>
+</div> 
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Purchase purchase in Model)
+        {
+            <tr>
+                <td>@purchase.Name</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-success" href="Edit/@purchase.Id">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

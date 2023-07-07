@@ -1,0 +1,25 @@
+﻿@using ComprASP.Data;
+@model Product
+
+<form asp-action="Edit">
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="Name">Nombre</label>
+            <input asp-for="Name" class="form-control" name="Name" type="text" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="MarketId">Mercado</label>
+            <select asp-for="MarketId" asp-items="@ViewBag.Markets" class="form-control">
+                <option>Selecciona uno</option>                
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button aria-label="Close" class="btn btn-outline-dark" data-bs-dismiss="modal" type="button">Cerrar</button>
+        </div>
+    </div>
+</form>

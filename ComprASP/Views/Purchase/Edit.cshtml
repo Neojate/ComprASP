@@ -1,0 +1,61 @@
+﻿@using ComprASP.Data;
+@model Purchase
+
+<partial name="_Modal" />
+<form asp-action="@ViewBag.FormAction" method="post">
+    @if (Model != null)
+    {
+        <input asp-for="Id" type="hidden" />
+    }
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="Name">Nombre</label>
+            <input asp-for="Name" class="form-control" name="Name" type="text" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-end">
+            <a asp-action="Index" class="btn btn-outline-dark">Volver</a>
+            <button class="btn btn-outline-warning ms-2" type="submit">Guardar</button>
+        </div>
+    </div>    
+</form>
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-outline-warning" onclick="loadModal()" type="button">Agregar Producto</button>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Mercado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ProductPurchase productPurchase in Model.ProductPurchases)
+            {
+                <tr>
+                    <td>@productPurchase.Product.Name</td>
+                    <td>@productPurchase.Quantity</td>
+                    <td>@productPurchase.Product.Market.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @section Scripts {
+        <script>
+            function loadModal() {
+                $('#modal_body').load(`/Product/Create/@Model.Id`, () => {
+                    $('#modal').modal('show');
+                    $('#modal_title').html('Insertar producto');
+                });
+            }
+        </script>
+    }
+}
+

@@ -1,0 +1,22 @@
+﻿@using ComprASP.ViewModels.Markets;
+@model MarketViewModel
+
+<form asp-action="@ViewBag.FormAction" method="post">
+    @if (Model != null)
+    {
+        <input asp-for="Id" type="hidden" />
+    }
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="Name">Nombre</label>
+            <input class="form-control" name="Name" type="text" asp-for="Name"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-end">
+            <a asp-action="Index" class="btn btn-outline-dark">Volver</a>
+            <button class="btn btn-outline-warning ms-2" type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
