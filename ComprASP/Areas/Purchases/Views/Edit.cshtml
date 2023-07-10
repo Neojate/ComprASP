@@ -50,9 +50,16 @@
     @section Scripts {
         <script>
             function loadModal() {
-                $('#modal_body').load(`/Product/Create/@Model.Id`, () => {
+                $('#modal_body').load(`/purchase/@Model.Id/product/addnewproduct`, () => {
                     $('#modal').modal('show');
                     $('#modal_title').html('Insertar producto');
+                });
+            }
+
+            function productSubmit() {
+                $.post('/purchase/@Model.Id/product/addproduct', $('#product_form').serialize(), result => {
+                    $('#modal_body').html(result);
+                    $('#modal').modal('show');
                 });
             }
         </script>

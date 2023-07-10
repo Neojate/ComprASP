@@ -13,7 +13,7 @@ namespace ComprASP.Areas.Purchases.ViewModels
         [Required(ErrorMessage = "El campo Mercado es obligatorio")]
         public int MarketId { get; set; }
 
-        public SelectList Markets { get; set; }
+        public SelectList? Markets { get; set; }
 
     }
 }
