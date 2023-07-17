@@ -1,4 +1,5 @@
 ﻿using ComprASP.Areas.Markets.Repositories;
+using ComprASP.Areas.Products.Repositories;
 using ComprASP.Areas.Purchases.Repositories;
 
 namespace ComprASP.Extensions

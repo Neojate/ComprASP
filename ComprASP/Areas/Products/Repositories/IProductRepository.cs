@@ -1,10 +1,14 @@
 ﻿using ComprASP.Data;
 
-namespace ComprASP.Areas.Purchases.Repositories
+namespace ComprASP.Areas.Products.Repositories
 {
     public interface IProductRepository
     {
+        public Task<IEnumerable<Product>> GetAllAsync(string userId);
+
         public Task<Product> GetAsync(int id);
+
+        public Task<Product> GetByName(string name, string userId);
 
         public Task<Product> StoreAsync(Product product);
 

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Purchases\ViewModels\" />
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="Views\Product\" />

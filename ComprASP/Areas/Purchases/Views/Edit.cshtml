@@ -25,7 +25,7 @@
 {
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-outline-warning" onclick="loadModal()" type="button">Agregar Producto</button>
+            <a class="btn btn-outline-warning" href="/purchase/@Model.Id/product/create" type="button">Agregar Producto</a>
         </div>
     </div>
     <table class="table table-bordered">
@@ -34,6 +34,7 @@
                 <th>Nombre</th>
                 <th>Cantidad</th>
                 <th>Mercado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -43,26 +44,13 @@
                     <td>@productPurchase.Product.Name</td>
                     <td>@productPurchase.Quantity</td>
                     <td>@productPurchase.Product.Market.Name</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-success" href="/purchase/@Model.Id/product/edit/@productPurchase.Id/">Editar</a>
+                        <a class="btn btn-sm btn-outline-dark" href="/purchase/@Model.Id/index">Eliminar</a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-    @section Scripts {
-        <script>
-            function loadModal() {
-                $('#modal_body').load(`/purchase/@Model.Id/product/addnewproduct`, () => {
-                    $('#modal').modal('show');
-                    $('#modal_title').html('Insertar producto');
-                });
-            }
-
-            function productSubmit() {
-                $.post('/purchase/@Model.Id/product/addproduct', $('#product_form').serialize(), result => {
-                    $('#modal_body').html(result);
-                    $('#modal').modal('show');
-                });
-            }
-        </script>
-    }
 }
 

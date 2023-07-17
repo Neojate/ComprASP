@@ -1,0 +1,86 @@
+﻿@using ComprASP.Areas.Products.ViewModels;
+@model AddProductViewModel
+
+<div class="d-grip gap-2">
+    <button class="btn btn-primary" id="btn_hablar">Hablar</button>
+</div>
+<form action="/purchase/@ViewBag.PurchaseId/product/create" method="post">
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="ProductName">Nombre</label>
+            <input asp-for="ProductName" class="form-control" type="text" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="MarketId">Mercado</label>
+            <select asp-for="MarketId" asp-items="Model.Markets" class="form-control">
+                <option>Selecciona uno</option>
+            </select>
+            <span asp-validation-for="MarketId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="Quantity">Cantidad</label>
+            <input asp-for="Quantity" class="form-control" type="number" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+        <a class="btn btn-outline-dark me-2" href="/purchase/edit/@ViewBag.PurchaseId/">Cerrar</a>
+        <button class="btn btn-warning">Aceptar</button>
+    </div>
+</form>
+@section Scripts {
+    <script>
+        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        var SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
+        var SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
+
+        var recognition = new SpeechRecognition();
+        var speechRecognitionList = new SpeechGrammarList();
+
+        recognition.grammars = speechRecognitionList;
+        recognition.continuous = false;
+        recognition.lang = "es";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        var btnHablar = $('#btn_hablar');
+
+        var datos = null;
+
+        btnHablar.click(() => {
+            btnHablar.prop('disabled', true);
+
+            recognition.start();
+        });
+
+        recognition.onresult = event => {
+            datos = event.results[0][0].transcript;
+            console.log(datos);
+        }
+
+        recognition.onspeechend = () => {
+            recognition.stop();
+            btnHablar.prop('disabled', false);
+            datos = null;
+
+            console.log(datos);
+
+            //const formData = new FormData();
+            //formData.append('name', "Groucho");
+            
+
+            //$.ajax({
+            //    type: 'POST',
+            //    url: '/purchase/@ViewBag.PurchaseId/product/foundproduct',
+            //    data: JSON.stringify({ name: 'Groucho' }),
+            //    dataType: 'json',
+            //    contentType: 'application/json'
+            //});
+        }
+    </script>
+}

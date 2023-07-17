@@ -1,7 +1,7 @@
 ﻿using ComprASP.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComprASP.Areas.Purchases.Repositories
+namespace ComprASP.Areas.Products.Repositories
 {
     public class ProductRepository : IProductRepository
     {
@@ -12,9 +12,21 @@ namespace ComprASP.Areas.Purchases.Repositories
             _context = context;
         }
 
-        public Task<Product> GetAsync(int id)
+        public async Task<Product> GetAsync(int id)
         {
-            return _context.Products.FirstOrDefaultAsync(item => item.Id == id);
+            return await _context.Products.FirstOrDefaultAsync(item => item.Id == id);
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsync(string userId)
+        {
+            return await _context.Products.Where(item => item.UserId == userId).ToListAsync();
+        }
+
+        public async Task<Product> GetByName(string name, string userId)
+        {
+            return await _context.Products
+                .Include(item => item.Market)
+                .FirstOrDefaultAsync(item => item.UserId == userId && item.Name.Contains(name));
         }
 
         public async Task<Product> StoreAsync(Product product)
