@@ -28,9 +28,12 @@ namespace ComprASP.Areas.Products.Repositories
             return productPurchase;
         }
 
-        public Task<ProductPurchase> UpdateAsync(ProductPurchase productPurchase)
+        public async Task<ProductPurchase> UpdateAsync(ProductPurchase productPurchase)
         {
-            throw new NotImplementedException();
+            _context.ProductPurchases.Update(productPurchase);
+            await _context.SaveChangesAsync();
+
+            return productPurchase;
         }
     }
 }

@@ -37,9 +37,12 @@ namespace ComprASP.Areas.Products.Repositories
             return product;
         }
 
-        public Task<Product> UpdateAsync(Product product)
+        public async Task<Product> UpdateAsync(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+
+            return product;
         }
     }
 }

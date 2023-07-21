@@ -4,18 +4,23 @@
 <div class="d-grip gap-2">
     <button class="btn btn-primary" id="btn_hablar">Hablar</button>
 </div>
-<form action="/purchase/@ViewBag.PurchaseId/product/create" method="post">
+<form action="/purchase/@ViewBag.PurchaseId/product/@ViewBag.FormAction" method="post">
+    <input asp-for="ProductId" id="productid" type="hidden" />
+    @if (Model.Id != null)
+    {
+        <input asp-for="Id" type="hidden" />
+    }
     <div class="row">
         <div class="col-12">
             <label asp-for="ProductName">Nombre</label>
-            <input asp-for="ProductName" class="form-control" type="text" />
+            <input asp-for="ProductName" class="form-control" id="productname" type="text" />
             <span asp-validation-for="ProductName" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <label asp-for="MarketId">Mercado</label>
-            <select asp-for="MarketId" asp-items="Model.Markets" class="form-control">
+            <select asp-for="MarketId" asp-items="Model.Markets" class="form-control" id="markets">
                 <option>Selecciona uno</option>
             </select>
             <span asp-validation-for="MarketId" class="text-danger"></span>
@@ -35,52 +40,59 @@
 </form>
 @section Scripts {
     <script>
-        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        var SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
-        var SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
-
-        var recognition = new SpeechRecognition();
-        var speechRecognitionList = new SpeechGrammarList();
-
-        recognition.grammars = speechRecognitionList;
-        recognition.continuous = false;
-        recognition.lang = "es";
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-
-        var btnHablar = $('#btn_hablar');
-
-        var datos = null;
-
-        btnHablar.click(() => {
-            btnHablar.prop('disabled', true);
-
-            recognition.start();
+        $('#productname').change(function() {
+            $.post('/purchase/@ViewBag.PurchaseId/product/foundproduct', { name: this.value }, data => {
+                $('#productname').val(data.name);
+                $('#markets').val(data.market.id);
+                $('#productid').val(data.id);
+            });
         });
+        //var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        //var SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
+        //var SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
 
-        recognition.onresult = event => {
-            datos = event.results[0][0].transcript;
-            console.log(datos);
-        }
+        //var recognition = new SpeechRecognition();
+        //var speechRecognitionList = new SpeechGrammarList();
 
-        recognition.onspeechend = () => {
-            recognition.stop();
-            btnHablar.prop('disabled', false);
-            datos = null;
+        //recognition.grammars = speechRecognitionList;
+        //recognition.continuous = false;
+        //recognition.lang = "es";
+        //recognition.interimResults = false;
+        //recognition.maxAlternatives = 1;
 
-            console.log(datos);
+        //var btnHablar = $('#btn_hablar');
 
-            //const formData = new FormData();
-            //formData.append('name', "Groucho");
+        //var datos = null;
+
+        //btnHablar.click(() => {
+        //    btnHablar.prop('disabled', true);
+
+        //    recognition.start();
+        //});
+
+        //recognition.onresult = event => {
+        //    datos = event.results[0][0].transcript;
+        //    console.log(datos);
+        //}
+
+        //recognition.onspeechend = () => {
+        //    recognition.stop();
+        //    btnHablar.prop('disabled', false);
+        //    datos = null;
+
+        //    console.log(datos);
+
+        //    //const formData = new FormData();
+        //    //formData.append('name', "Groucho");
             
 
-            //$.ajax({
-            //    type: 'POST',
-            //    url: '/purchase/@ViewBag.PurchaseId/product/foundproduct',
-            //    data: JSON.stringify({ name: 'Groucho' }),
-            //    dataType: 'json',
-            //    contentType: 'application/json'
-            //});
-        }
+        //    //$.ajax({
+        //    //    type: 'POST',
+        //    //    url: '/purchase/@ViewBag.PurchaseId/product/foundproduct',
+        //    //    data: JSON.stringify({ name: 'Groucho' }),
+        //    //    dataType: 'json',
+        //    //    contentType: 'application/json'
+        //    //});
+        //}
     </script>
 }

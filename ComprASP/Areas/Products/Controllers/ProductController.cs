@@ -2,6 +2,7 @@
 using ComprASP.Areas.Products.Repositories;
 using ComprASP.Areas.Products.ViewModels;
 using ComprASP.Data;
+using ComprASP.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -37,6 +38,7 @@ namespace ComprASP.Areas.Products.Controllers
             };
 
             ViewBag.PurchaseId = purchaseId;
+            ViewBag.FormAction = nameof(Create);
 
             return View("Edit", model);
         }
@@ -47,12 +49,7 @@ namespace ComprASP.Areas.Products.Controllers
             if (!ModelState.IsValid)
                 return View("Edit", model);
 
-            Product product = await _productRepository.StoreAsync(new Product
-            {
-                Name = model.ProductName,
-                MarketId = model.MarketId,
-                UserId = UserId
-            });
+            Product product = await CheckProduct(model);
 
             await _productPurchaseRepository.StoreAsync(new ProductPurchase
             {
@@ -76,13 +73,16 @@ namespace ComprASP.Areas.Products.Controllers
 
             AddProductViewModel model = new AddProductViewModel
             {
+                Id = pp.Id,
                 ProductName = pp.Product.Name,
+                ProductId = pp.Product.Id,
                 MarketId = pp.Product.MarketId,
                 Quantity = pp.Quantity,
                 Markets = new SelectList(markets, nameof(Market.Id), nameof(Market.Name))
             };
 
             ViewBag.PurchaseId = purchaseId;
+            ViewBag.FormAction = nameof(Update);
 
             return View(model);
         }
@@ -92,18 +92,20 @@ namespace ComprASP.Areas.Products.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(model);
 
-            Product product = (await _productRepository.GetAllAsync(UserId)).Where(item => item.Name == model.ProductName).FirstOrDefault();
+            Product product = await CheckProduct(model);
 
-            if (product == null)
-                return NotFound();
+            await _productPurchaseRepository.UpdateAsync(new ProductPurchase
+            {
+                Id = model.Id ?? default(int),
+                ProductId = product.Id,
+                PurchaseId = purchaseId,
+                Quantity = model.Quantity,
+            });
 
-
-
-            return null;
+            return Redirect($"/purchase/edit/{purchaseId}");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> FoundProduct(ProductName model)
         {
             Product product = await _productRepository.GetByName(model.Name, UserId);
@@ -113,42 +115,26 @@ namespace ComprASP.Areas.Products.Controllers
                 : Ok(product);
         }
 
-        public async Task<IActionResult> AddNewProduct(int purchaseId)
+        private async Task<Product> CheckProduct(AddProductViewModel model)
         {
-            IEnumerable<Market> markets = await _marketRepository.GetAllAsync(UserId);
-
-            AddProductViewModel model = new AddProductViewModel
+            if (model.ProductId == null)
             {
-                Markets = new SelectList(markets, nameof(Market.Id), nameof(Market.Name)),
-            };
+                return await _productRepository.StoreAsync(new Product
+                {
+                    Name = model.ProductName,
+                    MarketId = model.MarketId,
+                    UserId = UserId
+                });
+            }
 
-            ViewBag.PurchaseId = purchaseId;
-
-            return PartialView("_AddProduct", model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddProduct(AddProductViewModel model, int purchaseId)
-        {
-            if (!ModelState.IsValid)
-                return PartialView("_AddProduct", model);
-
-            //TODO: el producto es nuevo
-            Product product = await _productRepository.StoreAsync(new Product
+            return await _productRepository.UpdateAsync(new Product
             {
+                Id = model.ProductId ?? default(int),
                 Name = model.ProductName,
                 MarketId = model.MarketId,
                 UserId = UserId
             });
-
-            await _productPurchaseRepository.StoreAsync(new ProductPurchase
-            {
-                PurchaseId = purchaseId,
-                ProductId = product.Id,
-                Quantity = model.Quantity,
-            });
-
-            return Redirect($"purchase/{purchaseId}/index");
         }
+
     }
 }

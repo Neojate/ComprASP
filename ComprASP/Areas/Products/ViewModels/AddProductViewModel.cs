@@ -5,6 +5,8 @@ namespace ComprASP.Areas.Products.ViewModels
 {
     public class AddProductViewModel
     {
+        public int? Id { get; set; }
+
         [Required(ErrorMessage = "El campo Nombre es obligatorio")]
         public string ProductName { get; set; }
         public int? ProductId { get; set; }
