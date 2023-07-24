@@ -115,6 +115,16 @@ namespace ComprASP.Areas.Products.Controllers
                 : Ok(product);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Delete(int purchaseId, int id)
+        {
+            ProductPurchase productPurchase = await _productPurchaseRepository.GetAsync(id);
+
+            return await _productPurchaseRepository.DeleteAsync(productPurchase)
+                ? Redirect($"/purchase/edit/{purchaseId}")
+                : NotFound();
+        }
+
         private async Task<Product> CheckProduct(AddProductViewModel model)
         {
             if (model.ProductId == null)

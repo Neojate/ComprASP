@@ -15,5 +15,7 @@ namespace ComprASP.Data
         public User? User { get; set; }
 
         public IEnumerable<ProductPurchase>? ProductPurchases { get; set; }
+
+        public IEnumerable<PurchasePrice>? PurchasePrices { get; set; }
     }
 }

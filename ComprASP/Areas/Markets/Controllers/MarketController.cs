@@ -83,6 +83,19 @@ namespace ComprASP.Areas.Markets.Controllers
                 : RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Market market = await _marketRepository.GetAsync(id);
+
+            if (market.UserId != UserId)
+                return NotFound();
+
+            await _marketRepository.DeleteAsync(market);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> Delete(int id)
         //{

@@ -12,6 +12,6 @@ namespace ComprASP.Areas.Markets.Repositories
 
         public Task<Market> UpdateAsync(Market market);
 
-        public Task<int> DeleteAsync(int id);
+        public Task<bool> DeleteAsync(Market market);
     }
 }

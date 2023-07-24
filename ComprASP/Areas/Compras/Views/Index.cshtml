@@ -1,0 +1,25 @@
+﻿<h1>Compras</h1>
+<div class="d-flex justify-content-end mb-4">
+    <a class="btn btn-outline-warning" href="create">Crear nuevo</a>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Purchase purchase in Model)
+        {
+            <tr>
+                <td>@purchase.Name</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-success" asp-action="Edit" asp-route-id="@purchase.Id">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

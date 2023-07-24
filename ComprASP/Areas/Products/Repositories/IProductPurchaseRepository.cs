@@ -9,5 +9,7 @@ namespace ComprASP.Areas.Products.Repositories
         public Task<ProductPurchase> StoreAsync(ProductPurchase productPurchase);
 
         public Task<ProductPurchase> UpdateAsync(ProductPurchase productPurchase);
+
+        public Task<bool> DeleteAsync(ProductPurchase productPurchase);
     }
 }

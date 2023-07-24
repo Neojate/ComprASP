@@ -25,14 +25,14 @@
 {
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-outline-warning" href="/purchase/@Model.Id/product/create" type="button">Agregar Producto</a>
+            <a class="btn btn-outline-warning mb-4" href="/purchase/@Model.Id/product/create" type="button">Agregar Producto</a>
         </div>
     </div>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Cantidad</th>
+                @*<th>Cantidad</th>*@
                 <th>Mercado</th>
                 <th>Acciones</th>
             </tr>
@@ -41,16 +41,29 @@
             @foreach (ProductPurchase productPurchase in Model.ProductPurchases)
             {
                 <tr>
-                    <td>@productPurchase.Product.Name</td>
-                    <td>@productPurchase.Quantity</td>
+                    <td>@productPurchase.Quantity - @productPurchase.Product.Name</td>
+                    @*<td>@productPurchase.Quantity</td>*@
                     <td>@productPurchase.Product.Market.Name</td>
                     <td>
-                        <a class="btn btn-sm btn-outline-success" href="/purchase/@Model.Id/product/edit/@productPurchase.Id/">Editar</a>
-                        <a class="btn btn-sm btn-outline-dark" href="/purchase/@Model.Id/index">Eliminar</a>
+                        <a class="btn btn-sm btn-outline-success" href="/purchase/@Model.Id/product/edit/@productPurchase.Id/">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-dark" onclick="myDelete('/purchase/@Model.Id/product/delete/@productPurchase.Id')" type="button">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+}
+@section Scripts {
+    <script>
+        function myDelete(url) {
+            $('#confirm_delete').prop('href', url);
+            $('#confirm').modal('show');
+        }
+        
+    </script>
 }
 

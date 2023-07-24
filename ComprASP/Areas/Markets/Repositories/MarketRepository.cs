@@ -12,17 +12,12 @@ namespace ComprASP.Areas.Markets.Repositories
             _context = context;
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Market market)
         {
-            Market? market = await _context.Markets.FirstOrDefaultAsync(item => item.Id == id);
-
-            if (market == null)
-                return -1;
-
             _context.Markets.Remove(market);
             await _context.SaveChangesAsync();
 
-            return 1;
+            return true;
         }
 
         public async Task<IEnumerable<Market>> GetAllAsync(string userId)

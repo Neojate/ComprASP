@@ -1,4 +1,5 @@
-﻿using ComprASP.Areas.Markets.Repositories;
+﻿using ComprASP.Areas.Compras.Repositories;
+using ComprASP.Areas.Markets.Repositories;
 using ComprASP.Areas.Products.Repositories;
 using ComprASP.Areas.Purchases.Repositories;
 
@@ -12,7 +13,8 @@ namespace ComprASP.Extensions
                 .AddScoped<IMarketRepository, MarketRepository>()
                 .AddScoped<IPurchaseRepository, PurchaseRepository>()
                 .AddScoped<IProductRepository, ProductRepository>()
-                .AddScoped<IProductPurchaseRepository, ProductPurchaseRepository>();
+                .AddScoped<IProductPurchaseRepository, ProductPurchaseRepository>()
+                .AddScoped<ICompraRepository, CompraRepository>();
         }
     }
 }

@@ -12,6 +12,14 @@ namespace ComprASP.Areas.Products.Repositories
             _context = context;
         }
 
+        public async Task<bool> DeleteAsync(ProductPurchase productPurchase)
+        {
+            _context.ProductPurchases.Remove(productPurchase);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<ProductPurchase> GetAsync(int ppId)
         {
             return await _context.ProductPurchases

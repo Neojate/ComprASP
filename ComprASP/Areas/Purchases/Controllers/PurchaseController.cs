@@ -78,5 +78,18 @@ namespace ComprASP.Areas.Purchases.Controllers
                 ? View(purchase)
                 : RedirectToAction(nameof(Index));
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Purchase purchase = await _purchaseRepository.GetAsync(id);
+
+            if (purchase == null || purchase.UserId != UserId)
+                return NotFound();
+
+            return await _purchaseRepository.DeleteAsync(purchase)
+                ? RedirectToAction(nameof(Index))
+                : NotFound();
+        }
     }
 }

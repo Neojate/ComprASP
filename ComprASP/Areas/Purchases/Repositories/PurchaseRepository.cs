@@ -12,14 +12,26 @@ namespace ComprASP.Areas.Purchases.Repositories
             _context = context;
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Purchase purchase)
         {
-            throw new NotImplementedException();
+            _context.Purchases.Remove(purchase);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<IEnumerable<Purchase>> GetAllAsync(string userId)
         {
-            return await _context.Purchases.Where(item => item.UserId == userId).ToListAsync();
+            return await _context.Purchases
+                .Include(item => item.PurchasePrices)
+                .Where(item => item.UserId == userId && item.PurchasePrices.Count() == 0).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Purchase>> GetAllForBuyAsync(string userId)
+        {
+            return await _context.Purchases
+                .Include(item => item.PurchasePrices)
+                .Where(item => item.UserId == userId).ToListAsync();
         }
 
         public async Task<Purchase> GetAsync(int id)

@@ -1,4 +1,5 @@
 ﻿<h1>Listas compra</h1>
+<partial name="_Modal" />
 <div class="d-flex justify-content-end mb-4">
     <a asp-action="Create" class="btn btn-outline-warning">Crear nuevo</a>
 </div> 
@@ -15,9 +16,23 @@
             <tr>
                 <td>@purchase.Name</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@purchase.Id" class="btn btn-sm btn-outline-success">Editar</a>
+                    <a asp-action="Edit" asp-route-id="@purchase.Id" class="btn btn-sm btn-outline-success">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                    <button class="btn btn-sm btn-outline-dark" onclick="myDelete('/purchase/delete/@purchase.Id')" type="button">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@section Scripts {
+    <script>
+        function myDelete(url) {
+            $('#confirm_delete').prop('href', url);
+            $('#confirm').modal('show');
+        }
+
+    </script>
+}
