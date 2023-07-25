@@ -31,6 +31,8 @@ namespace ComprASP.Areas.Purchases.Repositories
         {
             return await _context.Purchases
                 .Include(item => item.PurchasePrices)
+                .Include(item => item.ProductPurchases)                    
+                    .ThenInclude(item => item.Product)
                 .Where(item => item.UserId == userId).ToListAsync();
         }
 

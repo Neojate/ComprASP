@@ -1,4 +1,5 @@
 ﻿using ComprASP.Areas.Compras.Repositories;
+using ComprASP.Areas.Compras.ViewModels;
 using ComprASP.Areas.Purchases.Repositories;
 using ComprASP.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -27,13 +28,26 @@ namespace ComprASP.Areas.Compras.Controllers
         {
             IEnumerable<Purchase> purchases = await _purchaseRepository.GetAllForBuyAsync(UserId);
 
+            List<PurchaseMarketViewModel> model = new List<PurchaseMarketViewModel>();
+
+            foreach (Purchase purchase in purchases)
+            {
+                
+            }
+
             return View(purchases);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Edit(int id)
-        {
-            IEnumerable<CompraRepository> compras = await _compraRepository.GetAllAsync(UserId);
-        }
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> Edit(int id)
+        //{
+        //    IEnumerable<PurchasePrice> result = await _compraRepository.GetAllAsync(id);
+        //    List<PurchasePrice> prices = new List<PurchasePrice>();
+
+        //    foreach (PurchasePrice price in result)
+        //    {
+
+        //    }
+        //}
     }
 }

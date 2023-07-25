@@ -16,7 +16,6 @@ namespace ComprASP.Areas.Compras.Repositories
         {
             return await _context.PurchasePrices
                 .Where(item => item.PurchaseId == purchaseId)
-                .GroupBy(item => item.MarketId)
                 .ToListAsync();
         }
 
